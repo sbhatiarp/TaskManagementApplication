@@ -18,6 +18,7 @@ import {
   DialogActions,
   DialogContentText,
   Box,
+  Divider,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
@@ -71,54 +72,55 @@ const TaskGrid: React.FC = () => {
 
   return (
     <div>
-      <Box>
+      <Box my={4} px={4}>
         <Typography variant="h4" gutterBottom>
-          Tasks
+          Task List
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<AddIcon />}
-          onClick={() => setIsDialogOpen(true)}
-        >
-          Create Task
-        </Button>
-      </Box>
+        <Box display="flex" justifyContent="flex-end" mb={2}>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => setIsDialogOpen(true)}
+          >
+            Create Task
+          </Button>
+        </Box>
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>Description</TableCell>
-              <TableCell>Created Date</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tasks.map(({ id, description, createdDate, isCompleted }) => (
-              <TableRow key={id}>
-                <TableCell>{id}</TableCell>
-                <TableCell>{description}</TableCell>
-                <TableCell>
-                  {new Date(createdDate).toLocaleDateString()}
-                </TableCell>
-                <TableCell>{isCompleted ? "Completed" : "Pending"}</TableCell>
-                <TableCell>
-                  <IconButton
-                    color="error"
-                    onClick={() => handleDeleteClick(id)}
-                  >
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>ID</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Created Date</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Actions</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
+            </TableHead>
+            <TableBody>
+              {tasks.map(({ id, description, createdDate, isCompleted }) => (
+                <TableRow key={id}>
+                  <TableCell>{id}</TableCell>
+                  <TableCell>{description}</TableCell>
+                  <TableCell>
+                    {new Date(createdDate).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>{isCompleted ? "Completed" : "Pending"}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      color="error"
+                      onClick={() => handleDeleteClick(id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
       <Dialog
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
@@ -126,8 +128,12 @@ const TaskGrid: React.FC = () => {
         fullWidth
       >
         <DialogTitle>
-          <Box>
-            Create New Task
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography variant="h6">Create New Task</Typography>
             <IconButton
               edge="end"
               color="inherit"
@@ -137,6 +143,7 @@ const TaskGrid: React.FC = () => {
             </IconButton>
           </Box>
         </DialogTitle>
+        <Divider />
         <DialogContent>
           <CreateTaskForm onTaskCreated={handleTaskCreated} />
         </DialogContent>
@@ -145,6 +152,8 @@ const TaskGrid: React.FC = () => {
       <Dialog
         open={deleteConfirmOpen}
         onClose={() => setDeleteConfirmOpen(false)}
+        maxWidth="sm"
+        fullWidth
       >
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>
